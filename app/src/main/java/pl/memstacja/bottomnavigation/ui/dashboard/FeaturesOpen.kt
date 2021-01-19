@@ -7,9 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
+import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 
 class FeaturesOpen : AppCompatActivity() {
     var name: String? = null
+    var tmpId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         title = "Ocena cech produktu"
@@ -34,13 +36,13 @@ class FeaturesOpen : AppCompatActivity() {
         return true
     }
 
-    private fun generateList(): List<ExampleItem> {
-        val list = ArrayList<ExampleItem>()
+    private fun generateList(): List<DegustationItem> {
+        val list = ArrayList<DegustationItem>()
 
         for (i in 1..3){
-            val item = ExampleItem(
-                "Cecha ${i.toString()} produktu $name",
-                ""
+            val item = DegustationItem(
+                tmpId++,
+                "Cecha ${i.toString()} produktu $name"
             )
 
             list += item
@@ -51,7 +53,7 @@ class FeaturesOpen : AppCompatActivity() {
 
     private fun setToList(recyclerView: RecyclerView) {
 
-        val generatedList: List<ExampleItem> = generateList()
+        val generatedList: List<DegustationItem> = generateList()
         recyclerView.adapter = FeaturesAdapter(generatedList.reversed())
         recyclerView.layoutManager = LinearLayoutManager(this@FeaturesOpen)
         recyclerView.setHasFixedSize(true)

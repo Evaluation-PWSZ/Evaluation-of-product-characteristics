@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
+import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 
 
-class ExampleAdapter(private val exampleList: List<ExampleItem>) : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() {
+class DashboardAdapter(var list: MutableList<DegustationItem>) : RecyclerView.Adapter<DashboardAdapter.ExampleViewHolder>() {
 
     class ExampleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView1: TextView = itemView.findViewById(R.id.text_view_1)
@@ -24,13 +25,38 @@ class ExampleAdapter(private val exampleList: List<ExampleItem>) : RecyclerView.
         return ExampleViewHolder(itemView)
     }
 
-    override fun getItemCount() = exampleList.size
+    fun addToList(degustationItem: DegustationItem) {
+        list.add(0, degustationItem)
+
+        notifyDataSetChanged()
+        notifyItemInserted(list.size - 1)
+    }
+
+    fun removeWithList(id: Int) {
+        val itemList = list.find { it.id == id }
+        list.remove(itemList)
+
+        notifyDataSetChanged()
+        notifyItemInserted(list.size - 1)
+    }
+
+    fun updateInList(id: Int, name: String) {
+        list.filter { it.id == id }.forEach {
+            it.name = name
+        }
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = list.size
 
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
-        val currentItem = exampleList[position]
+        val currentItem = list[position]
 
-        holder.textView1.text = currentItem.text1
-        holder.textView2.text = currentItem.text2
+        holder.textView1.text = currentItem.name
+        if(currentItem.description.toString().length < 21)
+            holder.textView2.text = currentItem.description
+        else
+            holder.textView2.text = "${currentItem.description.toString().substring(20)}..."
 
         holder.itemView.setOnClickListener {
             val textView: TextView = it.findViewById(R.id.text_view_1);
@@ -38,8 +64,8 @@ class ExampleAdapter(private val exampleList: List<ExampleItem>) : RecyclerView.
 
             val context = holder.itemView.context
             val intent = Intent(context, PartsOpen::class.java)
-            intent.putExtra("listName", currentItem.text1)
-            intent.putExtra("listDescription", currentItem.text2)
+            intent.putExtra("listName", currentItem.name)
+            intent.putExtra("listDescription", currentItem.description)
 
             context.startActivity(intent)
         }

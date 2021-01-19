@@ -1,7 +1,5 @@
 package pl.memstacja.bottomnavigation.ui.dashboard
 
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +8,10 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
+import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 
 
-class FeaturesAdapter(private val exampleList: List<ExampleItem>) : RecyclerView.Adapter<FeaturesAdapter.FeaturesViewHolder>() {
+class FeaturesAdapter(private val degustationList: List<DegustationItem>) : RecyclerView.Adapter<FeaturesAdapter.FeaturesViewHolder>() {
 
     class FeaturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView1: TextView = itemView.findViewById(R.id.text_view_1)
@@ -27,12 +26,12 @@ class FeaturesAdapter(private val exampleList: List<ExampleItem>) : RecyclerView
         return FeaturesViewHolder(itemView)
     }
 
-    override fun getItemCount() = exampleList.size
+    override fun getItemCount() = degustationList.size
 
     override fun onBindViewHolder(holder: FeaturesViewHolder, position: Int) {
-        val currentItem = exampleList[position]
+        val currentItem = degustationList[position]
 
-        holder.textView1.text = currentItem.text1
+        holder.textView1.text = currentItem.name
 
         holder.seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

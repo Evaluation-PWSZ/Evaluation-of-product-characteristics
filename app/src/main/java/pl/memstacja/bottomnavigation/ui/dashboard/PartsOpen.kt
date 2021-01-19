@@ -7,8 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
+import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
+import pl.memstacja.bottomnavigation.data.model.dashboard.ProductItem
 
 class PartsOpen : AppCompatActivity() {
+
+    var tmpId: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         title = "Produkty"
         super.onCreate(savedInstanceState)
@@ -34,13 +39,13 @@ class PartsOpen : AppCompatActivity() {
         return true
     }
 
-    private fun generateList(): List<ExampleItem> {
-        val list = ArrayList<ExampleItem>()
+    private fun generateList(): List<ProductItem> {
+        val list = ArrayList<ProductItem>()
 
         for (i in 1..5){
-            val item = ExampleItem(
-                "Produkt ${i.toString()}",
-                "Opis cechy: ${i.toString()}"
+            val item = ProductItem(
+                tmpId++,
+                name = "Produkt ${i.toString()}"
             )
 
             list += item
@@ -51,7 +56,7 @@ class PartsOpen : AppCompatActivity() {
 
     private fun setToList(recyclerView: RecyclerView) {
 
-        val generatedList: List<ExampleItem> = generateList()
+        val generatedList: List<ProductItem> = generateList()
         recyclerView.adapter = PartsAdapter(generatedList.reversed())
         recyclerView.layoutManager = LinearLayoutManager(this@PartsOpen)
         recyclerView.setHasFixedSize(true)
