@@ -3,10 +3,16 @@ package pl.memstacja.bottomnavigation.ui.account
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.pwszproducts.myapplication.data.model.StaticUserData
 
 class AccountViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is account Fragment"
+    private val _login = MutableLiveData<String>().apply {
+        value = StaticUserData.user.login
     }
-    val text: LiveData<String> = _text
+    private val _email = MutableLiveData<String>().apply {
+        value = StaticUserData.user.email
+    }
+
+    val login: LiveData<String> = _login
+    val email: LiveData<String> = _email
 }
