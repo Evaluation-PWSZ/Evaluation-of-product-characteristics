@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.login.LoginActivity">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="300dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:fontFamily="serif"
+            android:text="@string/hello"
+            android:textColor="#292727"
+            android:textSize="36sp"
+            app:autoSizeTextType="uniform" />
+
+        <EditText
+            android:id="@+id/login"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:hint="@string/prompt_login"
+            android:selectAllOnFocus="true"
+            android:textColor="#4C4949"
+            android:textColorHint="#4C4949" />
+
+        <TextView
+            android:id="@+id/login_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login"
+            android:layout_centerHorizontal="true"
+            android:textColor="#F44336" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="300dp"
+            android:layout_height="72dp"
+            android:layout_below="@id/login"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:hint="@string/prompt_password"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            android:textColor="#4C4949"
+            android:textColorHint="#4C4949" />
+
+        <TextView
+            android:id="@+id/password_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password"
+            android:layout_centerHorizontal="true"
+            android:textColor="#F44336" />
+
+        <Button
+            android:id="@+id/sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="start"
+            android:layout_marginTop="25dp"
+            android:background="#8BC34A"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/action_sign_in"
+            android:textColor="#393939"
+            app:backgroundTint="#8BC34A" />
+
+        <Button
+            android:id="@+id/register_click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sign_in"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/transparent"
+            android:text="@string/action_register"
+            android:textColor="#2196F3"
+            android:textSize="18sp"
+            app:autoSizeTextType="none" />
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="64dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/password"
+            app:layout_constraintStart_toStartOf="@+id/password" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

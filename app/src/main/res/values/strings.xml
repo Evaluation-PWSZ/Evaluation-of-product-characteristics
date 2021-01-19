@@ -20,4 +20,14 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="action_sign_in_short">Logowanie</string>
+    <string name="prompt_login">Login</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Hasło</string>
+
+    <string name="hello">Zaloguj się i głosuj</string>
+    <string name="register_hello">Zarejestruj konto</string>
+    <string name="action_sign_in">Logowanie</string>
+    <string name="action_register">Rejestracja</string>
 </resources>
