@@ -13,6 +13,7 @@ import com.pwszproducts.myapplication.data.model.ResultLogin
 import com.pwszproducts.myapplication.data.model.ResultUser
 import com.pwszproducts.myapplication.data.model.StaticUserData
 import org.json.JSONObject
+import pl.memstacja.bottomnavigation.MainActivity
 import pl.memstacja.bottomnavigation.R
 
 data class Errors (
@@ -151,8 +152,8 @@ class LoginActivity: AppCompatActivity() {
     }
 
     fun openListActivity() {
-        /*val intent = Intent(this, ListActivity::class.java)
-        startActivity(intent)*/
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
