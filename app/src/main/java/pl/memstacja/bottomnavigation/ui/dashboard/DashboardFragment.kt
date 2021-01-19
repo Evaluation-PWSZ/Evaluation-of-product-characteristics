@@ -1,12 +1,14 @@
 package pl.memstacja.bottomnavigation.ui.dashboard
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,8 +30,11 @@ class DegustationList: ArrayList<DegustationItem>()
 
 class DashboardFragment : Fragment() {
 
+    private var firstLoad: Boolean = true
+
     private var CREATE = 1;
     private var UPDATE = 2;
+    private var DELETE = 3;
     private lateinit var dashboardViewModel: DashboardViewModel
 
     override fun onCreateView(
@@ -37,14 +42,20 @@ class DashboardFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        DashboardViewModel.resetAdapter()
         dashboardViewModel =
                 ViewModelProvider(this).get(DashboardViewModel::class.java)
+
+        dashboardViewModel.getAdapter().activity = activity as Activity
+        dashboardViewModel.getAdapter().context = context as Context
+
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.recycle_view)
 
         val addButton = root.findViewById<FloatingActionButton>(R.id.add_degustation)
+
         addButton.setOnClickListener {
-            val intent = Intent(activity, DegustationCreateActivity::class.java)
+            val intent = Intent(context, DegustationCreateActivity::class.java)
             startActivityForResult(intent, CREATE)
         }
 
@@ -54,10 +65,13 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setToList(recyclerView: RecyclerView) {
-        recyclerView.adapter = dashboardViewModel.getAdapter()
-        downloadList()
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.setHasFixedSize(true)
+        if(firstLoad) {
+            recyclerView.adapter = dashboardViewModel.getAdapter()
+            downloadList()
+            recyclerView.layoutManager = LinearLayoutManager(activity)
+            recyclerView.setHasFixedSize(true)
+        }
+        firstLoad = false
     }
 
     fun downloadList() {
@@ -106,19 +120,52 @@ class DashboardFragment : Fragment() {
         val name: String = data.getStringExtra("name").toString()
         val description: String = data.getStringExtra("description").toString()
 
-        dashboardViewModel.addToAdapter(DegustationItem(id = id, name = name, description = description))
+        dashboardViewModel.addToAdapter(
+            DegustationItem(id = id, name = name, description = description)
+        )
+
+        Toast.makeText(context,
+            "Utworzono!",
+            Toast.LENGTH_LONG).show()
     }
 
     fun updateList(data: Intent?) {
+        val id: Int = data!!.getIntExtra("id", 0)
+        val name: String = data.getStringExtra("name").toString()
+        val description: String = data.getStringExtra("description").toString()
 
+        dashboardViewModel.getAdapter().updateInList(id, name, description)
+
+        Toast.makeText(context,
+            "Dokonano aktualizacji!",
+            Toast.LENGTH_LONG).show()
+    }
+
+    fun removeWithList(data: Intent?) {
+        val id: Int = data!!.getIntExtra("id", 0)
+
+        dashboardViewModel.getAdapter().removeWithList(id)
+
+        Toast.makeText(context,
+            "Usunięto!",
+            Toast.LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == CREATE && resultCode == Activity.RESULT_OK) {
             createList(data)
-        } else if(requestCode == UPDATE) {
-            updateList(data)
+            Log.d("EDIT_STATUS", "CREATED")
+        } else if(resultCode == Activity.RESULT_OK && data != null && data.hasExtra("type")) {
+            if(data.getStringExtra("type") == "update") {
+                updateList(data)
+                Log.d("EDIT_STATUS", "UPDATED")
+            } else if(data.getStringExtra("type") == "delete") {
+                removeWithList(data)
+                Log.d("EDIT_STATUS", "DELETED")
+            }
+        } else {
+            Log.d("EDIT_STATUS", "Empty WORLD");
         }
     }
 

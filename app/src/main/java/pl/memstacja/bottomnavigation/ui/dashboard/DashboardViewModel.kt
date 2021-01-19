@@ -6,7 +6,17 @@ import java.util.ArrayList
 
 class DashboardViewModel : ViewModel() {
 
-    private var adapter: DashboardAdapter = DashboardAdapter(generateEmptyList())
+    companion object {
+        private var adapter: DashboardAdapter = DashboardAdapter(ArrayList())
+
+        fun resetAdapter() {
+            adapter.resetAdapter()
+        }
+
+        fun getAdapter(): DashboardAdapter {
+            return adapter
+        }
+    }
 
     fun addToAdapter(listItem: DegustationItem, orderBy: String = "ASC") {
         if(orderBy == "ASC")
@@ -17,10 +27,6 @@ class DashboardViewModel : ViewModel() {
 
     fun getAdapter(): DashboardAdapter {
         return adapter
-    }
-
-    fun generateEmptyList(): MutableList<DegustationItem> {
-        return ArrayList<DegustationItem>()
     }
 
     /*private val _text = MutableLiveData<String>().apply {
