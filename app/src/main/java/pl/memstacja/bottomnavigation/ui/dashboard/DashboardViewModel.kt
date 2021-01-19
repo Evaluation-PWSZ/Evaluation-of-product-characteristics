@@ -8,8 +8,11 @@ class DashboardViewModel : ViewModel() {
 
     private var adapter: DashboardAdapter = DashboardAdapter(generateEmptyList())
 
-    fun addToAdapter(listItem: DegustationItem) {
-        adapter.addToList(listItem)
+    fun addToAdapter(listItem: DegustationItem, orderBy: String = "ASC") {
+        if(orderBy == "ASC")
+            adapter.addToList(listItem)
+        if(orderBy == "DESC")
+            adapter.addToListDesc(listItem)
     }
 
     fun getAdapter(): DashboardAdapter {

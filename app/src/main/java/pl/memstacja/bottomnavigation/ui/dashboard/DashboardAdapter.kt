@@ -32,6 +32,13 @@ class DashboardAdapter(var list: MutableList<DegustationItem>) : RecyclerView.Ad
         notifyItemInserted(list.size - 1)
     }
 
+    fun addToListDesc(degustationItem: DegustationItem) {
+        list.add(degustationItem)
+
+        notifyDataSetChanged()
+        notifyItemInserted(list.size - 1)
+    }
+
     fun removeWithList(id: Int) {
         val itemList = list.find { it.id == id }
         list.remove(itemList)
@@ -56,7 +63,7 @@ class DashboardAdapter(var list: MutableList<DegustationItem>) : RecyclerView.Ad
         if(currentItem.description.toString().length < 21)
             holder.textView2.text = currentItem.description
         else
-            holder.textView2.text = "${currentItem.description.toString().substring(20)}..."
+            holder.textView2.text = "${currentItem.description.toString().substring(0, 40)}..."
 
         holder.itemView.setOnClickListener {
             val textView: TextView = it.findViewById(R.id.text_view_1);

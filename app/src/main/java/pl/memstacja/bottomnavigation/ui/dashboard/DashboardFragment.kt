@@ -1,5 +1,7 @@
 package pl.memstacja.bottomnavigation.ui.dashboard
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,15 +17,19 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.pwszproducts.myapplication.data.model.StaticUserData
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
+import pl.memstacja.bottomnavigation.ui.Creators.DegustationCreateActivity
 
 class DegustationList: ArrayList<DegustationItem>()
 
 class DashboardFragment : Fragment() {
 
+    private var CREATE = 1;
+    private var UPDATE = 2;
     private lateinit var dashboardViewModel: DashboardViewModel
 
     override fun onCreateView(
@@ -34,7 +40,13 @@ class DashboardFragment : Fragment() {
         dashboardViewModel =
                 ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val recyclerView: RecyclerView = root.findViewById<RecyclerView>(R.id.recycle_view)
+        val recyclerView: RecyclerView = root.findViewById(R.id.recycle_view)
+
+        val addButton = root.findViewById<FloatingActionButton>(R.id.add_degustation)
+        addButton.setOnClickListener {
+            val intent = Intent(activity, DegustationCreateActivity::class.java)
+            startActivityForResult(intent, CREATE)
+        }
 
         setToList(recyclerView);
 
@@ -56,17 +68,11 @@ class DashboardFragment : Fragment() {
             {
                 val gson = Gson()
                 val degustationList: DegustationList = gson.fromJson(it.toString(), DegustationList::class.java)
-                /*val success = user.success
-                val lists = user.lists*/
-
                 Log.d("LIST", "Status TRUE");
                 for(elementList in degustationList) {
                     Log.d("LIST", "Loaded: ${elementList.id}");
-                    dashboardViewModel.addToAdapter(elementList)
+                    dashboardViewModel.addToAdapter(elementList, "DESC")
                 }
-                /*if(viewModel.getAdapter().itemCount > 0) {
-                    textMessage.text = ""
-                }*/
                 Log.d("CONNECT", "OK")
             },
             {
@@ -93,6 +99,27 @@ class DashboardFragment : Fragment() {
         }
 
         Volley.newRequestQueue(activity).add(stringRequest)
+    }
+
+    fun createList(data: Intent?) {
+        val id: Int = data!!.getIntExtra("id", 0)
+        val name: String = data.getStringExtra("name").toString()
+        val description: String = data.getStringExtra("description").toString()
+
+        dashboardViewModel.addToAdapter(DegustationItem(id = id, name = name, description = description))
+    }
+
+    fun updateList(data: Intent?) {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == CREATE && resultCode == Activity.RESULT_OK) {
+            createList(data)
+        } else if(requestCode == UPDATE) {
+            updateList(data)
+        }
     }
 
 }
