@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.pwszproducts.myapplication.data.model.StaticUserData
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.data.model.dashboard.ProductItem
+import pl.memstacja.bottomnavigation.ui.Creators.PartsCreateActivity
 import pl.memstacja.bottomnavigation.ui.dashboard.DegustationList
 
 class PartsList: ArrayList<ProductItem>()
@@ -40,8 +42,17 @@ class PartsOpen : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val id: Int = intent.getIntExtra("id", 0)
         val name: String? = intent.getStringExtra("listName")
         val description: String? = intent.getStringExtra("listDescription")
+
+        val buttonCreate = findViewById<FloatingActionButton>(R.id.add_product)
+
+        buttonCreate.setOnClickListener {
+            val intent = Intent(this, PartsCreateActivity::class.java)
+            intent.putExtra("id", id)
+            startActivityForResult(intent, CREATE)
+        }
 
         findViewById<TextView>(R.id.listName).text = name
         findViewById<TextView>(R.id.listDescription).text = description
@@ -92,11 +103,6 @@ class PartsOpen : AppCompatActivity() {
         }
 
         Volley.newRequestQueue(this@PartsOpen).add(stringRequest)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 
     private fun setToList(recyclerView: RecyclerView) {

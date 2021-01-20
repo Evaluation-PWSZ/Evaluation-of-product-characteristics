@@ -17,6 +17,7 @@
         <activity android:name=".ui.dashboard.FeaturesOpen" />
         <activity android:name=".ui.dashboard.parts.PartsOpen" />
         <activity android:name=".ui.Creators.DegustationCreateActivity" />
+        <activity android:name=".ui.Creators.PartsCreateActivity" />
         <activity android:name=".ui.Updators.DegustationUpdateActivity" />
         <activity
             android:name=".ui.login.LoginActivity"
