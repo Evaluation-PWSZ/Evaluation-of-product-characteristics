@@ -18,7 +18,7 @@ class FeaturesOpen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_features)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         name = intent.getStringExtra("productName")
 

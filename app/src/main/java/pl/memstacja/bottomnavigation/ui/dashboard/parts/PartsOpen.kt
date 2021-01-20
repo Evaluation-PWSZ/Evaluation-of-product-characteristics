@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,7 @@ import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.data.model.dashboard.ProductItem
 import pl.memstacja.bottomnavigation.ui.Creators.PartsCreateActivity
 import pl.memstacja.bottomnavigation.ui.dashboard.DegustationList
+import pl.memstacja.bottomnavigation.ui.dashboard.features.FeaturesProductOpen
 
 class PartsList: ArrayList<ProductItem>()
 
@@ -46,11 +48,19 @@ class PartsOpen : AppCompatActivity() {
         val description: String? = intent.getStringExtra("listDescription")
 
         val buttonCreate = findViewById<FloatingActionButton>(R.id.add_product)
+        val buttonGoFeatures = findViewById<Button>(R.id.go_features)
 
         buttonCreate.setOnClickListener {
             val intent = Intent(this, PartsCreateActivity::class.java)
             intent.putExtra("id", id)
             startActivityForResult(intent, CREATE)
+        }
+
+        buttonGoFeatures.setOnClickListener {
+            val intent = Intent(this, FeaturesProductOpen::class.java)
+            intent.putExtra("id", id)
+            intent.putExtra("degustation_name", name)
+            startActivity(intent)
         }
 
         findViewById<TextView>(R.id.listName).text = name

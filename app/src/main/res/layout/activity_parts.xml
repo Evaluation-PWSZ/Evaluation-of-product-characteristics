@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.dashboard.FeaturesOpen">
+    tools:context=".ui.dashboard.parts.PartsOpen">
 
     <TextView
         android:id="@+id/listName"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/listName" />
 
     <Button
-        android:id="@+id/add_features"
+        android:id="@+id/go_features"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
@@ -52,7 +52,7 @@
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_features" />
+        app:layout_constraintTop_toBottomOf="@id/go_features" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/viewGroup"
