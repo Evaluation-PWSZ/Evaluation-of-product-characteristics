@@ -16,23 +16,23 @@ import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.ui.Updators.DegustationUpdateActivity
 
 
-class DashboardAdapter(private val list: MutableList<DegustationItem>) : RecyclerView.Adapter<DashboardAdapter.ExampleViewHolder>() {
+class DashboardAdapter(private val list: MutableList<DegustationItem>) : RecyclerView.Adapter<DashboardAdapter.DashboardViewHolder>() {
 
     lateinit var context: Context
     lateinit var activity: Activity
     private val UPDATE= 2
 
-    class ExampleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.text_view_1)
-        val description: TextView = itemView.findViewById(R.id.text_view_2)
+    class DashboardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val name: TextView = itemView.findViewById(R.id.name)
+        val description: TextView = itemView.findViewById(R.id.description)
         val editButton: Button = itemView.findViewById(R.id.edit_button)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DashboardViewHolder {
         val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_element, parent, false)
 
-        return ExampleViewHolder(itemView)
+        return DashboardViewHolder(itemView)
     }
 
     fun addToList(degustationItem: DegustationItem) {
@@ -72,14 +72,16 @@ class DashboardAdapter(private val list: MutableList<DegustationItem>) : Recycle
 
     override fun getItemCount() = list.size
 
-    override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DashboardViewHolder, position: Int) {
         val currentItem = list[position]
 
         holder.name.text = currentItem.name
-        if(currentItem.description.toString().length < 21)
-            holder.description.text = currentItem.description
-        else
-            holder.description.text = "${currentItem.description.toString().substring(0, 40)}..."
+        if(currentItem.description != null) {
+            if (currentItem.description.toString().length < 41)
+                holder.description.text = currentItem.description
+            else
+                holder.description.text = "${currentItem.description.toString().substring(0, 40)}..."
+        }
 
         holder.editButton.setOnClickListener {
             val intent = Intent(context, DegustationUpdateActivity::class.java)
@@ -90,7 +92,7 @@ class DashboardAdapter(private val list: MutableList<DegustationItem>) : Recycle
         }
 
         holder.itemView.setOnClickListener {
-            val textView: TextView = it.findViewById(R.id.text_view_1);
+            val textView: TextView = holder.name
             Log.d("APPLICATION", "Clicked element with title: " + textView.text)
 
             val context = holder.itemView.context
