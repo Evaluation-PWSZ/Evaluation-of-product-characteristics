@@ -1,5 +1,6 @@
 package pl.memstacja.bottomnavigation.ui.dashboard.parts
 
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,13 +10,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.ProductItem
+import pl.memstacja.bottomnavigation.ui.Updators.ProductUpdateActivity
 import pl.memstacja.bottomnavigation.ui.dashboard.FeaturesOpen
 
 
-class PartsAdapter(private val productList: MutableList<ProductItem>) : RecyclerView.Adapter<PartsAdapter.FeaturesViewHolder>() {
+class PartsAdapter(var productList: MutableList<ProductItem>) : RecyclerView.Adapter<PartsAdapter.FeaturesViewHolder>() {
 
     class FeaturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView1: TextView = itemView.findViewById(R.id.text_view_1)
+        val name: TextView = itemView.findViewById(R.id.name)
+        val buttonEdit: TextView = itemView.findViewById(R.id.update_product)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeaturesViewHolder {
@@ -47,17 +50,14 @@ class PartsAdapter(private val productList: MutableList<ProductItem>) : Recycler
         notifyItemInserted(productList.size - 1)
     }
 
-    fun updateInList(id: Int, name: String, description: String) {
-        productList.filter { it.id == id }.forEach {
+    fun updateInList(id: Int, name: String) {
+        Log.d("LIST_UPDATE", "Update id: $id with text: $name")
+        /*productList.filter { it.id == id }.forEach {
             it.name = name
-            it.description = description
-        }
+        }*/
+        productList.find { it.id == id }?.name = name
         notifyDataSetChanged()
         notifyItemInserted(productList.size - 1)
-    }
-
-    fun resetAdapter() {
-        productList.clear()
     }
 
     override fun getItemCount() = productList.size
@@ -65,18 +65,29 @@ class PartsAdapter(private val productList: MutableList<ProductItem>) : Recycler
     override fun onBindViewHolder(holder: FeaturesViewHolder, position: Int) {
         val currentItem = productList[position]
 
-        holder.textView1.text = currentItem.name
+        holder.name.text = currentItem.name
 
         holder.itemView.setOnClickListener {
-            val textView: TextView = it.findViewById(R.id.text_view_1);
-            Log.d("APPLICATION", "Clicked element with title: " + textView.text)
+            Log.d("APPLICATION", "Clicked element with title: " + holder.name)
 
             val context = holder.itemView.context
             val intent = Intent(context, FeaturesOpen::class.java)
+            intent.putExtra("id", currentItem.id)
             intent.putExtra("productName", currentItem.name)
-            //intent.putExtra("listDescription", currentItem.text2)
 
             context.startActivity(intent)
         }
+
+        holder.buttonEdit.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, ProductUpdateActivity::class.java)
+            Log.d("DEGUSTATION", "${currentItem.degustation_id}")
+            intent.putExtra("degustation_id", currentItem.degustation_id)
+            intent.putExtra("id", currentItem.id)
+            intent.putExtra("name", currentItem.name)
+
+            (context as Activity).startActivityForResult(intent, 2)
+        }
+
     }
 }

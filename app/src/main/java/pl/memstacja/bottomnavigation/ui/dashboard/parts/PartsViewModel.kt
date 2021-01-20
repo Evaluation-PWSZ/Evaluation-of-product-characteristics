@@ -5,17 +5,8 @@ import pl.memstacja.bottomnavigation.data.model.dashboard.ProductItem
 import java.util.ArrayList
 
 class PartsViewModel: ViewModel() {
-    companion object {
-        private var adapter: PartsAdapter = PartsAdapter(ArrayList())
 
-        fun resetAdapter() {
-            adapter.resetAdapter()
-        }
-
-        fun getAdapter(): PartsAdapter {
-            return adapter
-        }
-    }
+    private var adapter: PartsAdapter = PartsAdapter(ArrayList())
 
     fun addToAdapter(listItem: ProductItem, orderBy: String = "ASC") {
         if(orderBy == "ASC")
@@ -27,4 +18,5 @@ class PartsViewModel: ViewModel() {
     fun getAdapter(): PartsAdapter {
         return adapter
     }
+
 }

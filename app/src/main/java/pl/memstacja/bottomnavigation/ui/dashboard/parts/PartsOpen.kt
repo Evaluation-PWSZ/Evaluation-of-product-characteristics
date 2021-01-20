@@ -33,7 +33,6 @@ class PartsOpen : AppCompatActivity() {
     //var tmpId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        PartsViewModel.resetAdapter()
         title = "Produkty"
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_parts)
@@ -74,7 +73,8 @@ class PartsOpen : AppCompatActivity() {
                     val degustationList: PartsList = gson.fromJson(it.toString(), PartsList::class.java)
                     Log.d("LIST", "Status TRUE");
                     for(elementList in degustationList) {
-                        Log.d("LIST", "Loaded: ${elementList.id}");
+                        elementList.degustation_id = intent.getIntExtra("id", 0)
+                        Log.d("LIST", "Loaded: ${elementList.id}, ${elementList.degustation_id}")
                         partsViewModel.addToAdapter(elementList)
                     }
                     Log.d("CONNECT", "OK")
@@ -107,7 +107,7 @@ class PartsOpen : AppCompatActivity() {
 
     private fun setToList(recyclerView: RecyclerView) {
         downloadList()
-        recyclerView.adapter = PartsViewModel.getAdapter()
+        recyclerView.adapter = partsViewModel.getAdapter()
         recyclerView.layoutManager = LinearLayoutManager(this@PartsOpen)
         recyclerView.setHasFixedSize(true)
     }
@@ -128,12 +128,11 @@ class PartsOpen : AppCompatActivity() {
     fun updateList(data: Intent?) {
         val id: Int = data!!.getIntExtra("id", 0)
         val name: String = data.getStringExtra("name").toString()
-        val description: String = data.getStringExtra("description").toString()
 
-        partsViewModel.getAdapter().updateInList(id, name, description)
+        partsViewModel.getAdapter().updateInList(id, name)
 
         Toast.makeText(this,
-                "Dokonano aktualizacji!",
+                "Dokonano aktualizacji produktu!",
                 Toast.LENGTH_LONG).show()
     }
 
@@ -143,12 +142,14 @@ class PartsOpen : AppCompatActivity() {
         partsViewModel.getAdapter().removeWithList(id)
 
         Toast.makeText(this,
-                "Usunięto!",
+                "Usunięto produkt!",
                 Toast.LENGTH_LONG).show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        Log.d("EDIT_STATUS", "Loaded: $requestCode, $resultCode")
 
         if(requestCode == CREATE && resultCode == Activity.RESULT_OK) {
             createList(data)
