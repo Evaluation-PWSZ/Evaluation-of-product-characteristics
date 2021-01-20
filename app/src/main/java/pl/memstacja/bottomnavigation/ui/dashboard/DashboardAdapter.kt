@@ -1,7 +1,6 @@
 package pl.memstacja.bottomnavigation.ui.dashboard
 
 import android.app.Activity
-import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.ui.Updators.DegustationUpdateActivity
+import pl.memstacja.bottomnavigation.ui.dashboard.parts.PartsOpen
 
 
 class DashboardAdapter(private val list: MutableList<DegustationItem>) : RecyclerView.Adapter<DashboardAdapter.DashboardViewHolder>() {
@@ -97,6 +97,7 @@ class DashboardAdapter(private val list: MutableList<DegustationItem>) : Recycle
 
             val context = holder.itemView.context
             val intent = Intent(context, PartsOpen::class.java)
+            intent.putExtra("id", currentItem.id)
             intent.putExtra("listName", currentItem.name)
             intent.putExtra("listDescription", currentItem.description)
 
