@@ -73,6 +73,7 @@ class PartsAdapter(var productList: MutableList<ProductItem>) : RecyclerView.Ada
             val context = holder.itemView.context
             val intent = Intent(context, FeaturesOpen::class.java)
             intent.putExtra("id", currentItem.id)
+            intent.putExtra("degustation_id", currentItem.degustation_id)
             intent.putExtra("productName", currentItem.name)
 
             context.startActivity(intent)

@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
+import pl.memstacja.bottomnavigation.data.model.dashboard.FeatureItem
 
 
-class FeaturesAdapter(private val degustationList: List<DegustationItem>) : RecyclerView.Adapter<FeaturesAdapter.FeaturesViewHolder>() {
+class FeaturesAdapter(private val degustationList: List<FeatureItem>) : RecyclerView.Adapter<FeaturesAdapter.FeaturesViewHolder>() {
 
     class FeaturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textView1: TextView = itemView.findViewById(R.id.text_view_1)
