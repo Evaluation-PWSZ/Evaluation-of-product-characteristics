@@ -10,15 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.FeatureItem
-import pl.memstacja.bottomnavigation.ui.Updators.ProductUpdateActivity
-import pl.memstacja.bottomnavigation.ui.dashboard.FeaturesOpen
+import pl.memstacja.bottomnavigation.ui.Updators.FeaturesUpdateActivity
 
 
 class FeaturesProductAdapter(var productList: MutableList<FeatureItem>) : RecyclerView.Adapter<FeaturesProductAdapter.FeaturesViewHolder>() {
 
     class FeaturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.name)
-        //val buttonEdit: TextView = itemView.findViewById(R.id.update_product)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeaturesViewHolder {
@@ -68,23 +66,15 @@ class FeaturesProductAdapter(var productList: MutableList<FeatureItem>) : Recycl
             Log.d("APPLICATION", "Clicked element with title: " + holder.name)
 
             val context = holder.itemView.context
-            val intent = Intent(context, FeaturesOpen::class.java)
-            intent.putExtra("id", currentItem.id)
-            intent.putExtra("productName", currentItem.name)
-
-            context.startActivity(intent)
-        }
-
-        /*holder.buttonEdit.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, ProductUpdateActivity::class.java)
-            Log.d("DEGUSTATION", "${currentItem.degustation_id}")
+            val intent = Intent(context, FeaturesUpdateActivity::class.java)
             intent.putExtra("degustation_id", currentItem.degustation_id)
             intent.putExtra("id", currentItem.id)
             intent.putExtra("name", currentItem.name)
 
+            Log.d("LOADED", "degustation_id: ${currentItem.degustation_id}, id: ${currentItem.id}")
+
             (context as Activity).startActivityForResult(intent, 2)
-        }*/
+        }
 
     }
 }

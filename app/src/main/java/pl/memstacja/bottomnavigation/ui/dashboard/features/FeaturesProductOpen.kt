@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.pwszproducts.myapplication.data.model.StaticUserData
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.FeatureItem
+import pl.memstacja.bottomnavigation.ui.Creators.FeaturesCreateActivity
 import pl.memstacja.bottomnavigation.ui.Creators.PartsCreateActivity
 
 class FeaturesList: ArrayList<FeatureItem>()
@@ -42,8 +43,9 @@ class FeaturesProductOpen : AppCompatActivity() {
         val buttonCreate = findViewById<FloatingActionButton>(R.id.add_features)
 
         buttonCreate.setOnClickListener {
-            val intent = Intent(this, PartsCreateActivity::class.java)
+            val intent = Intent(this, FeaturesCreateActivity::class.java)
             intent.putExtra("id", id)
+            intent.putExtra("name", name)
             startActivityForResult(intent, CREATE)
         }
 
@@ -70,7 +72,7 @@ class FeaturesProductOpen : AppCompatActivity() {
                 Log.d("LIST", "Status TRUE");
                 for(elementList in featureList) {
                     Log.d("LIST", "Loaded: ${elementList.id}, ${elementList.degustation_id}")
-                    featuresProductViewModel.addToAdapter(elementList)
+                    featuresProductViewModel.addToAdapter(elementList, "DESC")
                 }
                 Log.d("CONNECT", "OK")
             },
@@ -109,14 +111,15 @@ class FeaturesProductOpen : AppCompatActivity() {
 
     fun createList(data: Intent?) {
         val id: Int = data!!.getIntExtra("id", 0)
+        val degustation_id: Int = data.getIntExtra("degustation_id", 0)
         val name: String = data.getStringExtra("name").toString()
 
         featuresProductViewModel.addToAdapter(
-            FeatureItem(id = id, name = name)
+            FeatureItem(id = id, name = name, degustation_id = degustation_id)
         )
 
         Toast.makeText(this,
-            "Utworzono!",
+            "Dodano cechę dla produtków!",
             Toast.LENGTH_LONG).show()
     }
 
@@ -127,7 +130,7 @@ class FeaturesProductOpen : AppCompatActivity() {
         featuresProductViewModel.getAdapter().updateInList(id, name)
 
         Toast.makeText(this,
-            "Dokonano aktualizacji produktu!",
+            "Dokonano aktualizacji cechy produktów!",
             Toast.LENGTH_LONG).show()
     }
 
@@ -137,7 +140,7 @@ class FeaturesProductOpen : AppCompatActivity() {
         featuresProductViewModel.getAdapter().removeWithList(id)
 
         Toast.makeText(this,
-            "Usunięto produkt!",
+            "Usunięto cechę produktów!",
             Toast.LENGTH_LONG).show()
     }
 
