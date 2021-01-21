@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.pwszproducts.myapplication.data.model.StaticUserData
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.ui.Updators.DegustationUpdateActivity
@@ -81,6 +82,10 @@ class DashboardAdapter(private val list: MutableList<DegustationItem>) : Recycle
                 holder.description.text = currentItem.description
             else
                 holder.description.text = "${currentItem.description.toString().substring(0, 40)}..."
+        }
+
+        if(currentItem.owner_id != StaticUserData.user.id) {
+            holder.editButton.isEnabled = false
         }
 
         holder.editButton.setOnClickListener {
