@@ -15,7 +15,7 @@ import pl.memstacja.bottomnavigation.data.model.dashboard.FeatureItem
 class FeaturesAdapter(private val degustationList: List<FeatureItem>) : RecyclerView.Adapter<FeaturesAdapter.FeaturesViewHolder>() {
 
     class FeaturesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView1: TextView = itemView.findViewById(R.id.text_view_1)
+        val feature: TextView = itemView.findViewById(R.id.feature)
         val seekBar: SeekBar = itemView.findViewById(R.id.seekBar)
         val textStar: TextView = itemView.findViewById(R.id.stars)
     }
@@ -32,11 +32,11 @@ class FeaturesAdapter(private val degustationList: List<FeatureItem>) : Recycler
     override fun onBindViewHolder(holder: FeaturesViewHolder, position: Int) {
         val currentItem = degustationList[position]
 
-        holder.textView1.text = currentItem.name
+        holder.feature.text = currentItem.name
 
         holder.seekBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                holder.textStar.text = "$progress gwiazdek"
+                holder.textStar.text = "$progress ⭐"
                 Log.d("progress", "ok, progress $progress")
             }
 
