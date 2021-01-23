@@ -15,6 +15,7 @@ import com.pwszproducts.myapplication.data.model.StaticUserData
 import org.json.JSONObject
 import pl.memstacja.bottomnavigation.MainActivity
 import pl.memstacja.bottomnavigation.R
+import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.ui.dashboard.DashboardViewModel
 
 class DegustationUpdateActivity: AppCompatActivity() {
@@ -46,6 +47,7 @@ class DegustationUpdateActivity: AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("id", intent.getIntExtra("id", 0))
             intent.putExtra("type", "delete")
+            //setRe
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -97,6 +99,26 @@ class DegustationUpdateActivity: AppCompatActivity() {
         Volley.newRequestQueue(this).add(stringRequest)
     }
 
+    fun resultSuccessfull(jsonObject: JSONObject) {
+        Log.d("CONNECT", "OK")
+
+        DashboardViewModel.getAdapter().updateInList(
+            DegustationItem(
+                intent.getIntExtra("id", 0),
+                name.text.toString(),
+                description.text.toString()
+            )
+        )
+
+        val intent = Intent()
+        intent.putExtra("id", intent.getIntExtra("id", 0))
+        intent.putExtra("name", name.text.toString())
+        intent.putExtra("description", description.text.toString())
+        intent.putExtra("type", "update")
+        setResult(Activity.RESULT_OK, intent)
+        finish()
+    }
+
     fun sendRequest() {
         val url = "https://rate.kamilcraft.com/api/degustations/${intent.getIntExtra("id", 0)}"
 
@@ -108,21 +130,7 @@ class DegustationUpdateActivity: AppCompatActivity() {
         val stringRequest = object: JsonObjectRequest(
             Method.PUT, url, jsonObject,
             {
-                Log.d("CONNECT", "OK")
-
-                DashboardViewModel.getAdapter().updateInList(
-                    intent.getIntExtra("id", 0),
-                    name.text.toString(),
-                    description.text.toString()
-                )
-
-                val intent = Intent()
-                intent.putExtra("id", intent.getIntExtra("id", 0))
-                intent.putExtra("name", name.text.toString())
-                intent.putExtra("description", description.text.toString())
-                intent.putExtra("type", "update")
-                setResult(Activity.RESULT_OK, intent)
-                finish()
+                resultSuccessfull(it)
             },
             {
                 Log.d("CONNECT", "NOT OK, ${it.toString()}")

@@ -1,5 +1,9 @@
 package pl.memstacja.bottomnavigation.ui.dashboard
 
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import java.util.ArrayList
