@@ -126,6 +126,7 @@ class LoginActivity: AppCompatActivity() {
                     val gson = Gson()
                     val user = gson.fromJson(response.toString(), ResultUser::class.java)
 
+                    StaticUserData.isLogin = true
                     StaticUserData.user = user
 
                     Toast.makeText(this,
@@ -134,8 +135,9 @@ class LoginActivity: AppCompatActivity() {
                     openListActivity()
                 },
                 {
+                    StaticUserData.isLogin = false
                     Toast.makeText(this,
-                            "Wystąpił błąd podczas logowania! Spróbuj ponownie później",
+                            "Wylogowano, proszę zalogwać się ponownie.",
                             Toast.LENGTH_SHORT).show()
                 }
         ) {
