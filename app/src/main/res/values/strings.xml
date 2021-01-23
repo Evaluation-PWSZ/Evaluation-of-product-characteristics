@@ -30,4 +30,7 @@
     <string name="register_hello">Zarejestruj konto</string>
     <string name="action_sign_in">Logowanie</string>
     <string name="action_register">Rejestracja</string>
+
+    <string name="action_edit">Edytuj</string>
+    <string name="action_remove">Usuń</string>
 </resources>
