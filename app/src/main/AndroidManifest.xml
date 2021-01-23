@@ -13,7 +13,7 @@
         android:theme="@style/Theme.BottomNavigation">
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".ui.login.RegisterActivity" />
+        <activity android:name=".ui.login.RegisterActivity" android:label="Rejestracja" />
         <activity android:name=".ui.dashboard.FeaturesOpen" />
         <activity android:name=".ui.dashboard.parts.PartsOpen" />
         <activity android:name=".ui.dashboard.features.FeaturesProductOpen" />
