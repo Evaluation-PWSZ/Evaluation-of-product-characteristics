@@ -9,41 +9,65 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.pwszproducts.myapplication.data.model.StaticUserData
+import pl.memstacja.bottomnavigation.Connections.DegustationSession
 import pl.memstacja.bottomnavigation.R
 import pl.memstacja.bottomnavigation.data.model.dashboard.DegustationItem
 import pl.memstacja.bottomnavigation.data.model.dashboard.FeatureItem
+import pl.memstacja.bottomnavigation.data.model.dashboard.ProductItem
 import pl.memstacja.bottomnavigation.ui.Updators.FeaturesUpdateActivity
+import kotlin.properties.Delegates
 
 class FeatureList: ArrayList<FeatureItem>()
 
 class FeaturesOpen : AppCompatActivity() {
-    var name: String? = null
-    var degustation_id: Int? = null
-    var tmpId: Int = 0
 
-    var list = ArrayList<FeatureItem>()
-    lateinit var featuresList: RecyclerView
+    private lateinit var degustationSession: DegustationSession
+
+    private var degustation_id: Int = 0
+    private var product_id: Int = 0
+    private var token: String = ""
+
+    private var degustation = DegustationItem(0)
+    private var product = ProductItem(0, "")
+    private var featureList = ArrayList<FeatureItem>()
+
+    private lateinit var degustationName: TextView
+    private lateinit var productName: TextView
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        title = "Ocena cech produktu"
+        title = "Oceń produkt!"
+        token = "${StaticUserData.token.token}"
+        Log.d("TOKEN", "$token")
+
+        degustationSession = DegustationSession(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_features)
 
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        name = intent.getStringExtra("productName")
-        degustation_id = intent.getIntExtra("degustation_id", 0)
+        if(intent.hasExtra("degustation_id")) {
+            degustation_id = intent.getIntExtra("degustation_id", 0)
+        }
+        if(intent.hasExtra("product_id")) {
+            product_id = intent.getIntExtra("product_id", 0)
+        }
 
-        findViewById<TextView>(R.id.productName).text = name
+        degustationName = findViewById(R.id.degustationName)
+        productName = findViewById(R.id.productName)
+        recyclerView = findViewById(R.id.viewGroup)
 
-        Log.d("ACTIVE_APP", "$name")
+        if(intent.hasExtra("productName")) {
+            productName.text = intent.getStringExtra("productName")
+        }
 
-        featuresList = findViewById<RecyclerView>(R.id.viewGroup)
-
-        downloadList()
+        downloadDegustation()
+        downloadProduct()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -51,17 +75,74 @@ class FeaturesOpen : AppCompatActivity() {
         return true
     }
 
-    fun downloadList() {
+    fun downloadDegustation() {
+        val url = "https://rate.kamilcraft.com/api/degustations/$degustation_id"
+
+        val stringRequest = object: JsonObjectRequest(
+                Method.GET, url, null,
+                {
+                    val gson = Gson()
+                    degustation  = gson.fromJson(it.toString(), DegustationItem::class.java)
+                    degustationName.text = degustation.name
+
+                    downloadFeatures()
+                },
+                {
+                    var errorMessage: String = it.networkResponse.data.toString()
+                    Toast.makeText(this,
+                            "Wystąpił błąd podczas pobierania danych! ${errorMessage}",
+                            Toast.LENGTH_LONG).show()
+                }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer $token"
+                headers["Accept"] = "application/json"
+                headers["Content-Type"] = "application/json"
+                return headers
+            }
+        }
+
+        Volley.newRequestQueue(this).add(stringRequest)
+    }
+
+    fun downloadProduct() {
+        val url = "https://rate.kamilcraft.com/api/degustations/$degustation_id/products/$product_id"
+
+        val stringRequest = object: JsonObjectRequest(
+                Method.GET, url, null,
+                {
+                    val gson = Gson()
+                    product  = gson.fromJson(it.toString(), ProductItem::class.java)
+                    productName.text = product.name
+                },
+                {
+                    var errorMessage: String = it.networkResponse.data.toString()
+                    Toast.makeText(this,
+                            "Wystąpił błąd podczas pobierania danych! ${errorMessage}",
+                            Toast.LENGTH_LONG).show()
+                }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer $token"
+                headers["Accept"] = "application/json"
+                headers["Content-Type"] = "application/json"
+                return headers
+            }
+        }
+
+        Volley.newRequestQueue(this).add(stringRequest)
+    }
+
+    fun downloadFeatures() {
         val url = "https://rate.kamilcraft.com/api/degustations/$degustation_id/features"
 
         val stringRequest = object: JsonArrayRequest(
-                Request.Method.GET, url, null,
+                Method.GET, url, null,
                 {
                     val gson = Gson()
-                    val featureList: FeatureList = gson.fromJson(it.toString(), FeatureList::class.java)
-                    Log.d("LIST", "Status TRUE");
-                    list = featureList
-                    Log.d("CONNECT", "OK")
+                    featureList = gson.fromJson(it.toString(), FeatureList::class.java)
                     setToList()
                 },
                 {
@@ -80,7 +161,7 @@ class FeaturesOpen : AppCompatActivity() {
         ) {
             override fun getHeaders(): MutableMap<String, String> {
                 val headers = HashMap<String, String>()
-                headers["Authorization"] = "Bearer ${StaticUserData.token.token}"
+                headers["Authorization"] = "Bearer $token"
                 headers["Accept"] = "application/json"
                 headers["Content-Type"] = "application/json"
                 return headers
@@ -91,8 +172,8 @@ class FeaturesOpen : AppCompatActivity() {
     }
 
     private fun setToList() {
-        featuresList.adapter = FeaturesAdapter(list.reversed())
-        featuresList.layoutManager = LinearLayoutManager(this)
-        featuresList.setHasFixedSize(true)
+        recyclerView.adapter = FeaturesAdapter(featureList.reversed())
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
     }
 }
