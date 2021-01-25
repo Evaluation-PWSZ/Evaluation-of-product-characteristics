@@ -93,6 +93,7 @@ class InvitationsFragment : Fragment() {
                     if(it.networkResponse.statusCode == 400 || it.networkResponse.statusCode == 404) {
                         val resultErrorMessage = String(it.networkResponse.data, Charsets.UTF_8)
                         val result: responseErrorMessage = Gson().fromJson(resultErrorMessage, responseErrorMessage::class.java)
+                        errorMessage.visibility = View.INVISIBLE
                         errorMessage.visibility = View.VISIBLE
 
                         errorMessage.text = result.message.toString()
