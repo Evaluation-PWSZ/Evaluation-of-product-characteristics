@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class InvitationsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    private val _key = MutableLiveData<String>().apply {
+        value = ""
     }
-    val text: LiveData<String> = _text
+    val key: LiveData<String> = _key
 }
