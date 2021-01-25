@@ -1,10 +1,10 @@
-package pl.memstacja.bottomnavigation.ui.notifications
+package pl.memstacja.bottomnavigation.ui.invitations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
+class InvitationsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is notifications Fragment"

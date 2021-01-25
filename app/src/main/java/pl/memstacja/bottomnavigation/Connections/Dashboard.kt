@@ -23,8 +23,10 @@ class Dashboard {
                     val degustationList: DegustationList = gson.fromJson(it.toString(), DegustationList::class.java)
                     Log.d("LIST", "Status TRUE");
                     for(elementList in degustationList) {
-                        Log.d("LIST", "Loaded: ${elementList.id}");
-                        dashboardViewModel.addToAdapter(elementList, "DESC")
+                        if(elementList.owner_id == StaticUserData.user.id) {
+                            Log.d("LIST", "Loaded: ${elementList.id}")
+                            dashboardViewModel.addToAdapter(elementList, "DESC")
+                        }
                     }
                     Log.d("CONNECT", "OK")
                 },

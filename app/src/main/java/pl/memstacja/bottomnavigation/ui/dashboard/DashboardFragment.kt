@@ -92,9 +92,8 @@ class DashboardFragment : Fragment() {
         val description: String = data.getStringExtra("description").toString()
 
         val dashboardConnection = Dashboard()
-        context?.let {
-            dashboardConnection.createList(it, dashboardViewModel, DegustationItem(id, name, description = description))
-        }
+        Log.d("DESCRIPTION", "${description}")
+        dashboardConnection.updateList(requireContext(), dashboardViewModel, DegustationItem(id, name, description = description))
     }
 
     fun removeWithList(data: Intent?) {

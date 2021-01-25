@@ -44,12 +44,6 @@ class DegustationUpdateActivity: AppCompatActivity() {
 
         buttonRemove.setOnClickListener {
             sendRemoveRequest()
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("id", intent.getIntExtra("id", 0))
-            intent.putExtra("type", "delete")
-            //setRe
-            setResult(Activity.RESULT_OK, intent)
-            finish()
         }
     }
 
@@ -65,11 +59,9 @@ class DegustationUpdateActivity: AppCompatActivity() {
                     intent.getIntExtra("id", 0)
                 )
 
-                val intent = Intent()
+                val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("id", intent.getIntExtra("id", 0))
-                intent.putExtra("name", name.text.toString())
-                intent.putExtra("description", description.text.toString())
-                intent.putExtra("type", "update")
+                intent.putExtra("type", "delete")
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             },

@@ -2,7 +2,7 @@
     <string name="app_name">Rate IT</string>
     <string name="title_home">Dom</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Powiadomienia</string>
+    <string name="title_invitations">Zaproszenia</string>
     <string name="title_account">Konto</string>
     <string name="title_activity_settings">SettingsActivity</string>
 

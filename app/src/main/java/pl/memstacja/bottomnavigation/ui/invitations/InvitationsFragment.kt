@@ -1,4 +1,4 @@
-package pl.memstacja.bottomnavigation.ui.notifications
+package pl.memstacja.bottomnavigation.ui.invitations
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import pl.memstacja.bottomnavigation.R
 
-class NotificationsFragment : Fragment() {
+class InvitationsFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var invitationsViewModel: InvitationsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
+        invitationsViewModel =
+                ViewModelProvider(this).get(InvitationsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_invitations, container, false)
         val textView: TextView = root.findViewById(R.id.text_account)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        invitationsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
